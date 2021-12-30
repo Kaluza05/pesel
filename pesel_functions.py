@@ -74,7 +74,7 @@ class Society: # tworzenie zbiorowiska obywateli
         if self.new_dataframe['pesel'].to_string(index=False) not in self.society_dt['pesel'].tolist():
             self.society_dt =  self.society_dt.append(self.new_dataframe,ignore_index=True)
             self.population +=1
-
+        else: raise WrongPesel(self.new_dataframe['pesel'].to_string(index = False),'Pesel got repeated') #wywołuje błąd jeśli pesel juz istnieje
     def ban_citizen(self,citizens_index): #usuwa obywatela ze społeczeństwa
         if citizens_index in self.society_dt['indieces'].tolist():
             self.population -= 1
