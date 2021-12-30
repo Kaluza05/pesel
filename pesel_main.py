@@ -2,7 +2,7 @@ from pesel_functions import *
 
 def main():
     try:
-        citizens = Society(int(input('Enter number of citizens: ')))
+        citizens = Society(int(input('Enter number of citizens (positive integer): ')))
     except:
         citizens = Society(randint(5,20))
         print(f"You input for number of citizens wasn't a number. We randomly generated size of society for you: {citizens.count_population()}")
