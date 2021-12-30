@@ -40,13 +40,13 @@ def validate_pesel(pesel): #sprawdza czy liczba kontrolna się zgadza
     return False
 
 class NotFound(Exception): #wyjątek który ma być wywołany jeżeli wprowadzony pesel nie zostanie znaleziony
-    def __init__(self,spec,value, message = " not found on the list"):
+    def __init__(self,spec,value,message = " not found on the list"):
         self.spec = spec
         self.value = value 
         self.message = message
         super().__init__(f'{self.spec}{self.message}: "{self.value}"')
 class WrongPesel(Exception): #wyjątek który ma byc wywołany jeżeli liczba kontrolna wprowadzonego peselu sie nie zgadza
-    def __init__(self, pesel,message = "Pesel that you provided doesn't exist or got repeated"):
+    def __init__(self, pesel,*,message = "Pesel that you provided doesn't exist or got repeated"):
         self.pesel = pesel 
         self.message = message
         super().__init__(f'{self.message}: "{self.pesel}"')
@@ -74,7 +74,7 @@ class Society: # tworzenie zbiorowiska obywateli
         if self.new_dataframe['pesel'].to_string(index=False) not in self.society_dt['pesel'].tolist():
             self.society_dt =  self.society_dt.append(self.new_dataframe,ignore_index=True)
             self.population +=1
-        else: raise WrongPesel(self.new_dataframe['pesel'].to_string(index = False),'Pesel got repeated') #wywołuje błąd jeśli pesel juz istnieje
+        else: raise WrongPesel(self.new_dataframe['pesel'].to_string(index = False),message ='Pesel got repeated') #wywołuje błąd jeśli pesel juz istnieje
     def ban_citizen(self,citizens_index): #usuwa obywatela ze społeczeństwa
         if citizens_index in self.society_dt['indieces'].tolist():
             self.population -= 1
