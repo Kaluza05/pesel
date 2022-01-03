@@ -19,8 +19,9 @@ def main():
         elif action == '2' or action == 'delete_citizen':
             print(citizens.show_society())
             to_delete = int(input('Which citizen do you want to delete from society?(Enter index) '))
-            print(f'\nCitizen has been deleated:\n{citizens.society_dataframe().drop("indieces",axis=1).loc[to_delete-1].to_string()}')
+            citizen_delete = citizens.society_dataframe().drop("indieces",axis=1).loc[to_delete-1].to_string()
             citizens.ban_citizen(to_delete)
+            print(f'\nCitizen has been deleated:\n{citizen_delete}')
         elif action == '3' or action == 'change_pesel':
             print(citizens.show_society())
             index = int(input("Which person's pesel do you want to change?(Enter index) "))
