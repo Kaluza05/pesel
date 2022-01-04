@@ -2,7 +2,11 @@ from pesel_functions import *
 
 def main():
     try:
-        citizens = Society(int(input('Enter number of citizens (positive integer): ')))
+        population = int(input('Enter number of citizens (positive integer): '))
+        if population <= 0:
+            population = randint(5,20)
+            print(f"Your input wasn't a positive integer (input>0). Population was randomly generated to be: {population}")
+        citizens = Society(population)
     except:
         citizens = Society(randint(5,20))
         print(f"You input for number of citizens wasn't a number. We randomly generated size of society for you: {citizens.count_population()}")
@@ -15,7 +19,7 @@ def main():
         print('\n')
         if action == '1' or action == 'add_citizen':
             citizens.add_citizen()
-            print(f'''citizen was added:\n{citizens.society_dataframe()[['name','pesel']].iloc[citizens.count_population()-1].to_string()} ''')
+            print(f'''citizen was added:\n{citizens.society_dataframe()[['name','pesel']].iloc[citizens.count_population()-1].to_string()}''')
         elif action == '2' or action == 'delete_citizen':
             print(citizens.show_society())
             to_delete = int(input('Which citizen do you want to delete from society?(Enter index) '))
