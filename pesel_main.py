@@ -21,20 +21,20 @@ def main():
             citizens.add_citizen()
             print(f'''citizen was added:\n{citizens.society_dataframe()[['name','pesel']].iloc[citizens.count_population()-1].to_string()}''')
         elif action == '2' or action == 'delete_citizen':
-            print(citizens.show_society())
+            print(citizens)
             to_delete = int(input('Which citizen do you want to delete from society?(Enter index) '))
             citizen_delete = citizens.society_dataframe().drop("indieces",axis=1).loc[to_delete-1].to_string()
             citizens.ban_citizen(to_delete)
             print(f'\nCitizen has been deleated:\n{citizen_delete}')
         elif action == '3' or action == 'change_pesel':
-            print(citizens.show_society())
+            print(citizens)
             index = int(input("Which person's pesel do you want to change?(Enter index) "))
             old = citizens.society_dataframe().at[index-1,'pesel']
             new = input('What is your desired new pesel? ')
             citizens.change_pesel(index,new)
             print(f"{citizens.society_dataframe().at[index-1,'name']}'s pesel changed.\n old: {old}\n new: {new}")
         elif action == '4' or action == 'show_society':
-            print(citizens.show_society())
+            print(citizens)
         elif action == '5' or action == 'count_population':
             print(f"Society's population right now is: {citizens.count_population()}")
         elif action == '6' or action == 'count_man':
@@ -42,7 +42,7 @@ def main():
         elif action == '7' or action == 'count_woman':
             print(f"Number of females in society: {citizens.count_woman()}.")
         elif action == '8' or action == 'citizen_info':
-            print(citizens.show_society())
+            print(citizens)
             to_show = int(input('Enter index of a citizen to show: '))
             print('\n',citizens.get_info(to_show))
         elif action == '9' or action == 'terminate_program':
