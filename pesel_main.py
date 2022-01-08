@@ -1,5 +1,4 @@
 from pesel_functions import *
-
 def main():
     try:
         population = int(input('Enter number of citizens (positive integer): '))
@@ -7,7 +6,7 @@ def main():
             population = randint(5,20)
             print(f"Your input wasn't a positive integer (input>0). Population was randomly generated to be: {population}")
         citizens = Society(population)
-    except:
+    except ValueError:
         citizens = Society(randint(5,20))
         print(f"You input for number of citizens wasn't a number. We randomly generated size of society for you: {citizens.count_population()}")
     while True:
