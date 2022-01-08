@@ -2,7 +2,10 @@ from random import randint
 import names
 import pandas as pd
 from pandas.core.frame import DataFrame
+
 def pesel():
+    global WAGE
+    WAGE = [1,3,7,9,1,3,7,9,1,3]
     year = randint(1900,2099)
     month = randint(1,12)
     day31_months = [1,3,5,7,8,10,12]
@@ -31,11 +34,11 @@ def pesel():
     MM = str(month).zfill(2)
     DD = str(day).zfill(2)
     PPPP = ''.join([str(randint(0,9)) for _ in range(4)])
-    K = str(10 - int(str(sum([int(str(int(i)*wage)[-1]) for i,wage in zip(list(RR+MM+DD+PPPP),[1,3,7,9,1,3,7,9,1,3])]))[-1]))[-1]
+    K = str(10 - int(str(sum([int(str(int(i)*wage)[-1]) for i,wage in zip(list(RR+MM+DD+PPPP),WAGE)]))[-1]))[-1]
     return RR+MM+DD+PPPP+K
 
 def validate_pesel(pesel): #sprawdza czy liczba kontrolna się zgadza
-    if pesel[-1] == str(10 - int(str(sum([int(str(int(i)*wage)[-1]) for i,wage in zip(list(pesel[:-1]),[1,3,7,9,1,3,7,9,1,3])]))[-1]))[-1]:
+    if pesel[-1] == str(10 - int(str(sum([int(str(int(i)*wage)[-1]) for i,wage in zip(list(pesel[:-1]),WAGE)]))[-1]))[-1]:
         return True
     return False
 
@@ -54,13 +57,13 @@ class WrongPesel(Exception): #wyjątek który ma byc wywołany jeżeli liczba ko
 class Society: # tworzenie zbiorowiska obywateli 
     def __init__(self,population):
         self.population = population
-        self.citizens = { index : Citizen()  for index in range(1,population+1)} #słownik z peselem oraz 'adresem' klasy Citizen
+        self.citizens = { index : Citizen()  for index in range(1,population+1)} #słownik z indexem oraz 'adresem' klasy Citizen
         self.society_dt = pd.DataFrame({
          'indieces': self.citizens.keys(),
          'name': [person.get_name() for person in self.citizens.values()],
          'pesel': [person.get_pesel() for person in self.citizens.values()],
          'gender' : [person.gender() for person in self.citizens.values()]})
-    def show_society(self): #wyświetla imię obywatela oraz jego pesel
+    def __repr__(self): #wyświetla imię obywatela oraz jego pesel i index
         return self.society_dt.to_string(index= False)
     def society_dataframe(self):
         return self.society_dt
@@ -75,6 +78,7 @@ class Society: # tworzenie zbiorowiska obywateli
             self.society_dt =  self.society_dt.append(self.new_dataframe,ignore_index=True)
             self.population +=1
         else: raise WrongPesel(self.new_dataframe['pesel'].to_string(index = False),message ='Pesel got repeated') #wywołuje błąd jeśli pesel juz istnieje
+        
     def ban_citizen(self,citizens_index): #usuwa obywatela ze społeczeństwa
         if citizens_index in self.society_dt['indieces'].tolist():
             self.population -= 1
@@ -88,10 +92,9 @@ class Society: # tworzenie zbiorowiska obywateli
                 self.society_dt.at[index-1,'pesel'] = new_pesel
             else: raise NotFound("Index",index)
         else: raise WrongPesel(new_pesel)
+
     def get_info(self,index):
         return self.society_dt.drop("indieces",axis=1).loc[index-1].to_string()
-    def get_genders(self): #zwraca słownik z przyporządkowanymi płciami do peselu
-        return self.society_dt[['pesel','gender']].to_string(index=False)
     def count_woman(self): # liczy ile jest kobiet w społeczeństwie
         return self.society_dt['gender'].tolist().count('female')
     def count_man(self): # liczy ile jest mężczyzn w społeczeństwie
