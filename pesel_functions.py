@@ -34,11 +34,11 @@ def pesel():
     MM = str(month).zfill(2)
     DD = str(day).zfill(2)
     PPPP = ''.join([str(randint(0,9)) for _ in range(4)])
-    K = str(10 - int(str(sum([int(str(int(i)*wage)[-1]) for i,wage in zip(list(RR+MM+DD+PPPP),WAGE)]))[-1]))[-1]
+    K = str(10-int(str(sum(map(lambda num,wage : int(num)*wage,RR+MM+DD+PPPP,WAGE)))[-1]))[-1]
     return RR+MM+DD+PPPP+K
 
 def validate_pesel(pesel): #sprawdza czy liczba kontrolna się zgadza
-    if pesel[-1] == str(10 - int(str(sum([int(str(int(i)*wage)[-1]) for i,wage in zip(list(pesel[:-1]),WAGE)]))[-1]))[-1]:
+    if pesel[-1] == str(10-int(str(sum(map(lambda num,wage : int(num)*wage,pesel[:-1],WAGE)))[-1]))[-1]:
         return True
     return False
 
