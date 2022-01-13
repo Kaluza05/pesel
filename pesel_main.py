@@ -4,7 +4,7 @@ def main():
         population = int(input('Enter number of citizens (positive integer): '))
         if population <= 0:
             population = randint(5,20)
-            print(f"Your input wasn't a positive integer (input>0). Population was randomly generated to be: {population}")
+            print(f"Your input wasn't a positive integer. Population was randomly generated to be: {population}")
         citizens = Society(population)
     except ValueError:
         citizens = Society(randint(5,20))
@@ -20,13 +20,13 @@ def main():
             citizens.add_citizen()
             print(f'''citizen was added:\n{citizens.society_dataframe()[['name','pesel']].iloc[citizens.count_population()-1].to_string()}''')
         elif action == '2' or action == 'delete_citizen':
-            print(citizens)
+            print(f'indieces ranging from 1 to {citizens.count_population()}')
             to_delete = int(input('Which citizen do you want to delete from society?(Enter index) '))
             citizen_delete = citizens.society_dataframe().drop("indieces",axis=1).loc[to_delete-1].to_string()
             citizens.ban_citizen(to_delete)
             print(f'\nCitizen has been deleated:\n{citizen_delete}')
         elif action == '3' or action == 'change_pesel':
-            print(citizens)
+            print(f'indieces ranging from 1 to {citizens.count_population()}')
             index = int(input("Which person's pesel do you want to change?(Enter index) "))
             old = citizens.society_dataframe().at[index-1,'pesel']
             new = input('What is your desired new pesel? ')
@@ -41,7 +41,7 @@ def main():
         elif action == '7' or action == 'count_woman':
             print(f"Number of females in society: {citizens.count_woman()}.")
         elif action == '8' or action == 'citizen_info':
-            print(citizens)
+            print(f'indieces ranging from 1 to {citizens.count_population()}')
             to_show = int(input('Enter index of a citizen to show: '))
             print('\n',citizens.get_info(to_show))
         elif action == '9' or action == 'terminate_program':
